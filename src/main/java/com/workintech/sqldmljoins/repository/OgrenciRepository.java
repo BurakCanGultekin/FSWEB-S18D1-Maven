@@ -10,7 +10,7 @@ public interface OgrenciRepository extends JpaRepository<Ogrenci, Long> {
 
 
     //Kitap alan öğrencilerin öğrenci bilgilerini listeleyin..
-    String QUESTION_2 = "SELECT * FROM ogrenci AS o\n" +
+    String QUESTION_2 = "SELECT o.* FROM ogrenci AS o\n" +
             "JOIN islem AS i\n" +
             "ON i.ogrno = o.ogrno\n" +
             "JOIN kitap AS k\n" +
@@ -20,7 +20,7 @@ public interface OgrenciRepository extends JpaRepository<Ogrenci, Long> {
 
 
     //Kitap almayan öğrencileri listeleyin.
-    String QUESTION_3 = "SELECT * FROM ogrenci AS o\n" +
+    String QUESTION_3 = "SELECT o.* FROM ogrenci AS o\n" +
             "LEFT JOIN islem AS i\n" +
             "ON o.ogrno = i.ogrno\n" +
             "WHERE i.kitapno IS NULL;";
@@ -63,7 +63,8 @@ public interface OgrenciRepository extends JpaRepository<Ogrenci, Long> {
     String QUESTION_9 = "SELECT ad, soyad, COUNT(kitapno) FROM ogrenci AS o\n" +
             "LEFT JOIN islem AS i\n" +
             "ON i.ogrno = o.ogrno\n" +
-            "GROUP BY o.ad, o.soyad;";
+            "GROUP BY o.ad, o.soyad\n" +
+            "HAVING COUNT(i.kitapno) > 0;";
     @Query(value = QUESTION_9, nativeQuery = true)
     List<StudentNameSurnameCount> findStudentNameSurnameCount();
 }
